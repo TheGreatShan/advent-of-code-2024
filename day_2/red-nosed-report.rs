@@ -9,14 +9,36 @@ fn main(){
 
     let length = file_content.len();
 
+    let mut safe = 0;
+
     for n in 0..length {
-        let listOfInputInt : Vec<u32> = Vec::new(); 
-        let content = file_content[n].split(" ");
-        
-        for _ in 0..content.len(){
-            
+        let content : Vec<i32> = file_content[n]
+            .split(" ")
+            .map(|s| s.trim().parse::<i32>().unwrap())
+            .collect();
+        let mut operation = "";
+
+        for x in 1..content.len(){
+            let set_one = content[x];
+            let set_two = content[x-1];
+            let difference = set_one - set_two;
+
+            if (operation == "" || operation == "-") && (difference == -1 || difference == -2 || difference == -3){
+                operation = "-";
+                continue;
+            }
+            else if (operation == "" || operation == "+") && (difference == 1 || difference == 2 || difference == 3){
+                operation = "+";
+                continue;
+            } else {
+                operation = "not safe";
+                continue;
+            }
+        }
+        if operation != "not safe" {
+            safe += 1;
         }
     }
 
-    println!("{}", file_content);
+    println!("{}", safe);
 }
