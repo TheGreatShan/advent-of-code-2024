@@ -45,24 +45,24 @@ fn main() {
                 }
                 // CASE 2: Go down
                 if lineItter <= file_content.len() - 5 {
-                    let oneCharAbove : Vec<String> = file_content[lineItter + 1]
+                    let oneCharDown: Vec<String> = file_content[lineItter + 1]
                         .split("")
                         .map(|x| x.to_string())
                         .collect();
 
-                    if oneCharAbove[charItter] == "M" {
-                        let twoCharsAbove  : Vec<String> = file_content[lineItter + 2]
+                    if oneCharDown[charItter] == "M" {
+                        let twoCharsDown: Vec<String> = file_content[lineItter + 2]
                             .split("")
                             .map(|x| x.to_string())
                             .collect();
 
-                        if twoCharsAbove[charItter] == "A" {
-                            let threeCharsAbove  : Vec<String> = file_content[lineItter + 3]
+                        if twoCharsDown[charItter] == "A" {
+                            let threeCharsDown: Vec<String> = file_content[lineItter + 3]
                                 .split("")
                                 .map(|x| x.to_string())
                                 .collect();
 
-                            if threeCharsAbove[charItter] == "S" {
+                            if threeCharsDown[charItter] == "S" {
                                 counter += 1;
                                 println!("Crazy. XMAS is against down")
                             }
