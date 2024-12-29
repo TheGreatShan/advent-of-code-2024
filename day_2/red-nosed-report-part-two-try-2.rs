@@ -29,7 +29,7 @@ fn main(){
                 operations.push("-");
                 continue;
             }
-            else if (operation ==w "" || operation == "+") && (difference == 1 || difference == 2 || difference == 3){
+            else if (operation == "" || operation == "+") && (difference == 1 || difference == 2 || difference == 3){
                 operation = "+";
                 operations.push("+");
                 continue;
