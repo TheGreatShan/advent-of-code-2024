@@ -19,7 +19,7 @@ fn main(){
         let mut operation = "";
         let mut operations : Vec<&str> = Vec::new();
 
-        for x in 1..content.len(){
+        for x in 1..content.len() - 1{
             let set_one = content[x];
             let set_two = content[x-1];
             let difference = set_one - set_two;
@@ -50,7 +50,7 @@ fn main(){
                     None => break,
                 };
             operation = "";
-            for x in 1..content.len(){
+            for x in 1..content.len() - 1{
                 let set_one = content[x];
                 let set_two = content[x-1];
                 let difference = set_one - set_two;
