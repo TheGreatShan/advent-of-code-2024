@@ -1,206 +1,109 @@
 use std::fs;
 
 fn main() {
-    let file_content : Vec<String>  = fs::read_to_string("input.txt")
+    let file_content: Vec<Vec<char>> = fs::read_to_string("input.txt")
         .unwrap()
         .lines()
-        .map(String::from)
+        .map(|line| line.chars().collect())
         .collect();
 
     let mut counter = 0;
 
-    for lineItter in  0.. file_content.len() - 1{
-        let to_be_investigated : Vec<String> = file_content[lineItter]
-            .split("")
-            .map(|x| x.to_string())
-            .collect();
+    for line_index in 0..file_content.len() {
+        let to_be_investigated = &file_content[line_index];
 
-        for charItter in 0.. to_be_investigated.len() - 1 {
-            if to_be_investigated[charItter] == "X" {
+        for char_index in 0..to_be_investigated.len() {
+            if to_be_investigated[char_index] == 'X' {
                 // CASE 1: Go up
-                if lineItter >= 3 {
-                    let oneCharAbove : Vec<String> = file_content[lineItter - 1]
-                        .split("")
-                        .map(|x| x.to_string())
-                        .collect();
-
-                    if oneCharAbove[charItter] == "M" {
-                        let twoCharsAbove  : Vec<String> = file_content[lineItter - 2]
-                            .split("")
-                            .map(|x| x.to_string())
-                            .collect();
-
-                        if twoCharsAbove[charItter] == "A" {
-                            let threeCharsAbove  : Vec<String> = file_content[lineItter - 3]
-                                .split("")
-                                .map(|x| x.to_string())
-                                .collect();
-
-                            if threeCharsAbove[charItter] == "S" {
-                                counter += 1;
-                                println!("Crazy. XMAS is against above")
-                            }
-                        }
+                if line_index >= 3 {
+                    if file_content[line_index - 1][char_index] == 'M'
+                        && file_content[line_index - 2][char_index] == 'A'
+                        && file_content[line_index - 3][char_index] == 'S'
+                    {
+                        counter += 1;
+                        println!("Found XMAS going up at ({}, {})", line_index, char_index);
                     }
                 }
+
                 // CASE 2: Go down
-                if lineItter <= file_content.len() - 5 {
-                    let oneCharDown: Vec<String> = file_content[lineItter + 1]
-                        .split("")
-                        .map(|x| x.to_string())
-                        .collect();
-
-                    if oneCharDown[charItter] == "M" {
-                        let twoCharsDown: Vec<String> = file_content[lineItter + 2]
-                            .split("")
-                            .map(|x| x.to_string())
-                            .collect();
-
-                        if twoCharsDown[charItter] == "A" {
-                            let threeCharsDown: Vec<String> = file_content[lineItter + 3]
-                                .split("")
-                                .map(|x| x.to_string())
-                                .collect();
-
-                            if threeCharsDown[charItter] == "S" {
-                                counter += 1;
-                                println!("Crazy. XMAS is against down")
-                            }
-                        }
+                if line_index + 3 < file_content.len() {
+                    if file_content[line_index + 1][char_index] == 'M'
+                        && file_content[line_index + 2][char_index] == 'A'
+                        && file_content[line_index + 3][char_index] == 'S'
+                    {
+                        counter += 1;
+                        println!("Found XMAS going down at ({}, {})", line_index, char_index);
                     }
                 }
+
                 // CASE 3: Go right
-                if charItter <= to_be_investigated.len() - 5 {
-                    if to_be_investigated[charItter+1] == "M" {
-
-                        if to_be_investigated[charItter+2] == "A" {
-                            if  to_be_investigated[charItter+3] == "S" {
-                                counter += 1;
-                                println!("Crazy. XMAS is against right")
-                            }
-                        }
+                if char_index + 3 < to_be_investigated.len() {
+                    if to_be_investigated[char_index + 1] == 'M'
+                        && to_be_investigated[char_index + 2] == 'A'
+                        && to_be_investigated[char_index + 3] == 'S'
+                    {
+                        counter += 1;
+                        println!("Found XMAS going right at ({}, {})", line_index, char_index);
                     }
                 }
+
                 // CASE 4: Go left
-                if charItter >= 3 {
-                    if to_be_investigated[charItter-1] == "M" {
-
-                        if to_be_investigated[charItter-2] == "A" {
-                            if  to_be_investigated[charItter-3] == "S" {
-                                counter += 1;
-                                println!("Crazy. XMAS is against left")
-                            }
-                        }
+                if char_index >= 3 {
+                    if to_be_investigated[char_index - 1] == 'M'
+                        && to_be_investigated[char_index - 2] == 'A'
+                        && to_be_investigated[char_index - 3] == 'S'
+                    {
+                        counter += 1;
+                        println!("Found XMAS going left at ({}, {})", line_index, char_index);
                     }
                 }
-                // Case 5: Go diagonal right down
-                if lineItter <= file_content.len() - 5 &&  charItter <= to_be_investigated.len() - 5{
-                    let oneCharDown: Vec<String> = file_content[lineItter + 1]
-                        .split("")
-                        .map(|x| x.to_string())
-                        .collect();
 
-                    if oneCharDown[charItter + 1] == "M" {
-                        let twoCharsDown: Vec<String> = file_content[lineItter + 2]
-                            .split("")
-                            .map(|x| x.to_string())
-                            .collect();
-
-                        if twoCharsDown[charItter + 2] == "A" {
-                            let threeCharsDown: Vec<String> = file_content[lineItter + 3]
-                                .split("")
-                                .map(|x| x.to_string())
-                                .collect();
-
-                            if threeCharsDown[charItter + 3] == "S" {
-                                counter += 1;
-                                println!("Crazy. XMAS is against down left")
-                            }
-                        }
+                // CASE 5: Diagonal down-right
+                if line_index + 3 < file_content.len() && char_index + 3 < to_be_investigated.len() {
+                    if file_content[line_index + 1][char_index + 1] == 'M'
+                        && file_content[line_index + 2][char_index + 2] == 'A'
+                        && file_content[line_index + 3][char_index + 3] == 'S'
+                    {
+                        counter += 1;
+                        println!("Found XMAS diagonal down-right at ({}, {})", line_index, char_index);
                     }
                 }
-                // CASE 6: Go diagonal left down
 
-                if lineItter <= file_content.len() - 5 &&  charItter >= 3{
-                    let oneCharDown: Vec<String> = file_content[lineItter + 1]
-                        .split("")
-                        .map(|x| x.to_string())
-                        .collect();
-
-                    if oneCharDown[charItter - 1] == "M" {
-                        let twoCharsDown: Vec<String> = file_content[lineItter + 2]
-                            .split("")
-                            .map(|x| x.to_string())
-                            .collect();
-
-                        if twoCharsDown[charItter - 2] == "A" {
-                            let threeCharsDown: Vec<String> = file_content[lineItter + 3]
-                                .split("")
-                                .map(|x| x.to_string())
-                                .collect();
-
-                            if threeCharsDown[charItter - 3] == "S" {
-                                counter += 1;
-                                println!("Crazy. XMAS is against down right")
-                            }
-                        }
+                // CASE 6: Diagonal down-left
+                if line_index + 3 < file_content.len() && char_index >= 3 {
+                    if file_content[line_index + 1][char_index - 1] == 'M'
+                        && file_content[line_index + 2][char_index - 2] == 'A'
+                        && file_content[line_index + 3][char_index - 3] == 'S'
+                    {
+                        counter += 1;
+                        println!("Found XMAS diagonal down-left at ({}, {})", line_index, char_index);
                     }
-                    // Case 7: Go diagonal right up
-                    if lineItter >= 3 &&  charItter <= to_be_investigated.len() - 5{
-                        let oneCharDown: Vec<String> = file_content[lineItter - 1]
-                            .split("")
-                            .map(|x| x.to_string())
-                            .collect();
+                }
 
-                        if oneCharDown[charItter + 1] == "M" {
-                            let twoCharsDown: Vec<String> = file_content[lineItter - 2]
-                                .split("")
-                                .map(|x| x.to_string())
-                                .collect();
-
-                            if twoCharsDown[charItter + 2] == "A" {
-                                let threeCharsDown: Vec<String> = file_content[lineItter - 3]
-                                    .split("")
-                                    .map(|x| x.to_string())
-                                    .collect();
-
-                                if threeCharsDown[charItter + 3] == "S" {
-                                    counter += 1;
-                                    println!("Crazy. XMAS is against above left")
-                                }
-                            }
-                        }
+                // CASE 7: Diagonal up-right
+                if line_index >= 3 && char_index + 3 < to_be_investigated.len() {
+                    if file_content[line_index - 1][char_index + 1] == 'M'
+                        && file_content[line_index - 2][char_index + 2] == 'A'
+                        && file_content[line_index - 3][char_index + 3] == 'S'
+                    {
+                        counter += 1;
+                        println!("Found XMAS diagonal up-right at ({}, {})", line_index, char_index);
                     }
-                // CASE 6: Go diagonal left down
+                }
 
-                if lineItter >= 3 &&  charItter >= 3{
-                    let oneCharDown: Vec<String> = file_content[lineItter - 1]
-                        .split("")
-                        .map(|x| x.to_string())
-                        .collect();
-
-                    if oneCharDown[charItter - 1] == "M" {
-                        let twoCharsDown: Vec<String> = file_content[lineItter - 2]
-                            .split("")
-                            .map(|x| x.to_string())
-                            .collect();
-
-                        if twoCharsDown[charItter - 2] == "A" {
-                            let threeCharsDown: Vec<String> = file_content[lineItter - 3]
-                                .split("")
-                                .map(|x| x.to_string())
-                                .collect();
-
-                            if threeCharsDown[charItter - 3] == "S" {
-                                counter += 1;
-                                println!("Crazy. XMAS is against above right")
-                            }
-                        }
+                // CASE 8: Diagonal up-left
+                if line_index >= 3 && char_index >= 3 {
+                    if file_content[line_index - 1][char_index - 1] == 'M'
+                        && file_content[line_index - 2][char_index - 2] == 'A'
+                        && file_content[line_index - 3][char_index - 3] == 'S'
+                    {
+                        counter += 1;
+                        println!("Found XMAS diagonal up-left at ({}, {})", line_index, char_index);
                     }
                 }
             }
         }
     }
-}
-    println!("{}", counter)
+
+    println!("Total XMAS occurrences: {}", counter);
 }
